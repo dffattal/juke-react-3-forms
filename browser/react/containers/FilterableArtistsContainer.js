@@ -1,24 +1,29 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import Artists from '../components/Artists'
+import FilterInput from '../components/FilterInput'
 
 export default class FilterableArtistsContainer extends Component {
-  constructor() {
+  constructor(props) {
     super(props)
     this.state = {
-      visibleArtists: []
-      // CONTINUE HERE
+      currentValue: ''
     }
     this.filterState = this.filterState.bind(this)
   }
-  filterState(newArtists) {
-    this.setState({visibleArtists: newArtists})
+
+  filterState(event) {
+    this.setState({currentValue: event.target.value})
   }
 
   render() {
-      return (
+    var filteredArtists = this.props.artists.filter(artist => {
+      return artist.name.toLowerCase().includes(this.state.currentValue.toLowerCase())
+    })
+    return (
       <div>
-      <Artists />
-      <FilterableArtists filterState={this.filterState}/>
+      <FilterInput filterState={this.filterState}/>
+      <Artists visibleArtists= {filteredArtists}/>
       </div>
       )
     }
