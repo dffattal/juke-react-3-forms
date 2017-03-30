@@ -23,6 +23,8 @@ export default class AppContainer extends Component {
     this.prev = this.prev.bind(this);
     this.selectAlbum = this.selectAlbum.bind(this);
     this.selectArtist = this.selectArtist.bind(this);
+    this.setPlaylist = this.setPlaylist.bind(this);
+    this.selectPlaylist = this.selectPlaylist.bind(this);
   }
 
   componentDidMount () {
@@ -105,9 +107,24 @@ export default class AppContainer extends Component {
         selectedAlbum: convertAlbum(album)
       }));
   }
-  set playlist(){
-    
+
+  selectPlaylist (playlistId) {
+    axios.get(`/api/playlists/${playlistId}`)
+      .then(res => res.data)
+      .then(playlist => {
+        playlist.songs = playlist.songs.map(convertSong);
+        this.setState({
+          selectedPlaylist: playlist
+        });
+      });
   }
+
+  setPlaylist (newPlaylist) {
+    var currentPlaylists = this.state.playlists
+    currentPlaylists.push(newPlaylist)
+    this.setState({playlists: currentPlaylists})
+  }
+
   selectArtist (artistId) {
     Promise
       .all([
@@ -134,7 +151,9 @@ export default class AppContainer extends Component {
       toggleOne: this.toggleOne,
       toggle: this.toggle,
       selectAlbum: this.selectAlbum,
-      selectArtist: this.selectArtist
+      selectArtist: this.selectArtist,
+      setPlaylist: this.setPlaylist,
+      selectPlaylist: this.selectPlaylist
     });
 
     return (

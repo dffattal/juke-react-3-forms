@@ -22,7 +22,7 @@ submitFunction(){
     axios.post('/api/playlists', {name: this.state.currentValue})
     .then(res => res.data)
     .then(result => {
-    console.log(result) // response json from the server!
+    this.props.setPlaylist(result) // response json from the server!
   })
 }
 render(){
