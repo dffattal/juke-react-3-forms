@@ -30,7 +30,8 @@ export default class AppContainer extends Component {
     Promise
       .all([
         axios.get('/api/albums/'),
-        axios.get('/api/artists/')
+        axios.get('/api/artists/'),
+        axios.get('/api/playlists')
       ])
       .then(res => res.map(r => r.data))
       .then(data => this.onLoad(...data));
@@ -41,10 +42,11 @@ export default class AppContainer extends Component {
       this.setProgress(AUDIO.currentTime / AUDIO.duration));
   }
 
-  onLoad (albums, artists) {
+  onLoad (albums, artists,playlists) {
     this.setState({
       albums: convertAlbums(albums),
-      artists: artists
+      artists: artists,
+      playlists: playlists
     });
   }
 
@@ -103,7 +105,9 @@ export default class AppContainer extends Component {
         selectedAlbum: convertAlbum(album)
       }));
   }
-
+  set playlist(){
+    
+  }
   selectArtist (artistId) {
     Promise
       .all([
@@ -136,7 +140,7 @@ export default class AppContainer extends Component {
     return (
       <div id="main" className="container-fluid">
         <div className="col-xs-2">
-          <Sidebar />
+          <Sidebar playlists={this.state.playlists}/>
         </div>
         <div className="col-xs-10">
         {

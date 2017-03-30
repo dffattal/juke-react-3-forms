@@ -7,7 +7,8 @@ export default class FilterableArtistsContainer extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      currentValue: ''
+      currentValue: '',
+      changed: false
     }
     this.filterState = this.filterState.bind(this)
   }
